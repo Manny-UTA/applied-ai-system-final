@@ -121,7 +121,7 @@ I also learned the importance of combining automated testing with human judgment
 
 ## 🎥 Demo Video
 
-[PASTE YOUR LOOM LINK HERE]
+(https://www.loom.com/share/9af1f938c29a4e11a2c464bf042d70e4)
 
 ---
 
