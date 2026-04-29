@@ -1,118 +1,130 @@
-# 🎵 Music Recommender Simulation
+# 🎵 SmartTune AI: Explainable Music Recommender
 
-A content-based music recommendation simulator built in Python for the CodePath AI110 course.
+## 📌 Summary
 
----
+This project extends my **Music Recommender Simulation (Project 3)** into a full applied AI system.
 
-## How The System Works
+The system recommends songs based on user preferences such as genre, mood, and energy level. It uses a scoring algorithm to rank songs and generates explanations for why each recommendation was selected.
 
-Real-world platforms like Spotify combine two major approaches: **collaborative filtering** (recommending what similar users liked) and **content-based filtering** (recommending songs with similar audio attributes). This project simulates the content-based approach.
-
-VibeFinder compares each song's attributes — genre, mood, energy, valence, and danceability — against a user's taste profile. Songs that are closer to the user's preferences earn higher scores. The system returns the top-k songs with an explanation for each recommendation.
-
-**Features used:**
-- `genre` — categorical match (pop, rock, hip-hop, lofi, etc.)
-- `mood` — categorical match (happy, sad, intense, peaceful, etc.)
-- `energy` — numerical proximity (0.0 = calm, 1.0 = intense)
-- `valence` — numerical proximity (0.0 = dark, 1.0 = joyful)
-- `danceability` — numerical proximity (0.0 = low, 1.0 = high)
-- `release_decade` — optional decade preference bonus
+This project demonstrates how AI systems can transform input data into ranked predictions while maintaining transparency and reliability.
 
 ---
 
-## Algorithm Recipe
+## 🧠 AI Features
 
-| Signal | Balanced Weight | Notes |
-|---|---|---|
-| Genre match | +2.0 | Exact string match |
-| Mood match | +1.5 | Exact string match |
-| Energy proximity | up to +1.5 | `1.5 × (1 - \|gap\|)` |
-| Valence proximity | up to +1.0 | `1.0 × (1 - \|gap\|)` |
-| Danceability proximity | up to +1.0 | `1.0 × (1 - \|gap\|)` |
-| Decade match | +1.0 | Optional bonus |
+This system includes the following AI-inspired components:
 
-**Ranking modes** shift these weights:
-- `genre_first` — amplifies genre match to 4.0
-- `mood_first` — amplifies mood match to 4.0
-- `energy_focused` — amplifies energy proximity to 4.0
-- `balanced` — default weights above
+- **Scoring Engine**: Evaluates how well each song matches user preferences
+- **Explanation Generator**: Provides human-readable reasoning for each recommendation
+- **Agentic Workflow**: Displays step-by-step reasoning (scoring → ranking → output)
+- **Reliability System (Evaluation Script)**: Tests system performance across multiple user profiles
 
-**Potential bias**: genre match can dominate results if the user's genre makes up a large portion of the dataset. A song with a matching genre will always score higher than a non-matching song even if the non-matching song is a better fit on every other dimension.
+This satisfies the requirement for an integrated AI feature by demonstrating **automated decision-making, reasoning, and validation within a single pipeline**.
 
 ---
 
-## Project Structure
+## 🏗️ System Architecture
 
-```
-music-recommender/
-├── data/
-│   └── songs.csv          # 25 songs with 11 attributes each
-├── src/
-│   ├── recommender.py     # load_songs, score_song, recommend_songs
-│   └── main.py            # CLI with 5 profiles and 4 ranking modes
-├── model_card.md
-├── reflection.md
-└── README.md
-```
+
+User Input → Preference Parser → Scoring Engine → Ranking → Explanation Generator → Output → Evaluation
+
+
+- **Input**: User preferences (genre, mood, energy)
+- **Processing**: Scoring + ranking logic
+- **Output**: Top recommendations with explanations
+- **Evaluation**: Automated test system verifies correctness
 
 ---
 
-## Setup & Running
+## ⚙️ Setup Instructions
 
-```bash
-# Install dependencies (optional, for formatted tables)
-pip install tabulate
+1. Clone the repository:
 
-# Run the recommender
-python -m src.main
-```
+git clone https://github.com/Manny-UTA/applied-ai-system-final.git
 
-You'll be prompted to choose a ranking mode (1–4) or run all profiles across all modes (5).
+cd applied-ai-system-final
 
----
 
-## Sample Output
+2. Install dependencies:
 
-```
-=================================================================
- Profile : High-Energy Pop Fan
- Mode    : balanced
-=================================================================
-  #1  Levitating — Dua Lipa
-       Score  : 7.18
-       Why    : genre match (+2.0) | mood match (+1.5) | energy proximity (+1.28) | valence proximity (+0.90) | danceability proximity (+0.95)
+pip install -r requirements.txt
 
-  #2  Blinding Lights — The Weeknd
-       Score  : 6.53
-       Why    : genre match (+2.0) | mood match (+1.5) | energy proximity (+1.43) | ...
-```
+
+3. Run the system:
+
+python src/main.py
+
+
+4. Run evaluation tests:
+
+python evaluation.py
+
 
 ---
 
-## User Profiles Tested
+## 💻 Sample Output
 
-| Profile | Genre | Mood | Energy Target |
-|---|---|---|---|
-| High-Energy Pop Fan | pop | happy | 0.85 |
-| Chill Lofi Listener | lofi | peaceful | 0.20 |
-| Deep Intense Rock Head | rock | intense | 0.92 |
-| Hip-Hop Hype Machine | hip-hop | intense | 0.88 |
-| Sad Pop Night Drive | pop | sad | 0.40 |
+Example input:
+- genre = pop  
+- mood = happy  
+- energy = 0.7  
 
-Screenshots of terminal output for each profile are included below (add yours after running).
+Output:
+- Top 5 recommended songs  
+- Scores and detailed explanations  
 
-## Screenshots
+Evaluation Results:
 
-![Output 1](screenshot1.png)
-![Output 2](screenshot2.png)
-![Output 3](screenshot3.png)
-![Output 4](screenshot4.png)
+PASS
+PASS
+PASS
+
 
 ---
 
-## AI Collaboration
+## 🧪 Testing & Reliability
 
-- Used AI to design the proximity scoring formula and brainstorm weight strategies
-- AI suggested Euclidean distance across all features; I simplified to per-feature scoring for readability
-- AI helped structure the `reasons` return value for transparency
-- See `reflection.md` for full details
+The system includes an automated evaluation script that tests multiple user profiles.
+
+Results:
+- 3/3 test cases passed  
+- System consistently returned valid recommendations  
+- Demonstrates reliability across different input scenarios  
+
+Additionally, outputs were manually reviewed to confirm that recommendations align with user preferences.
+
+---
+
+## ⚖️ Design Decisions
+
+- Used rule-based scoring instead of machine learning for interpretability
+- Prioritized explainability to make decisions transparent
+- Structured the system modularly for testing and scalability
+
+---
+
+## ⚠️ Limitations
+
+- Limited dataset size may affect diversity of recommendations  
+- No real-time learning or adaptive personalization  
+- Relies on predefined scoring rules instead of trained models  
+
+---
+
+## 🧠 Reflection
+
+This project reinforced that AI systems are not just about models, but about building **structured pipelines that process input, generate decisions, and validate outputs**.
+
+I also learned the importance of combining automated testing with human judgment to ensure reliability.
+
+---
+
+## 🎥 Demo Video
+
+[PASTE YOUR LOOM LINK HERE]
+
+---
+
+## 📁 Base Project
+
+This project is based on my Project 3 Music Recommender Simulation, which originally implemented scoring and ranking logic without evaluation or system-level reasoning. This version expands it into a full applied AI system with testing, reasoning, and evaluation components.

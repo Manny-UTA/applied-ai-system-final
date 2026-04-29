@@ -107,3 +107,19 @@ def recommend_songs(user_prefs, songs, k=5, mode="balanced"):
     # Sort descending by score, then alphabetically by title for ties
     ranked = sorted(scored, key=lambda x: (-x[1], x[0]["title"]))
     return ranked[:k]
+
+def agent_recommend(user_prefs, songs):
+    print("\n[Agent] Step 1: Scoring songs")
+
+    scored = []
+    for song in songs:
+        score, reasons = score_song(user_prefs, song)
+        scored.append((song, score, reasons))
+
+    print("[Agent] Step 2: Ranking")
+
+    ranked = sorted(scored, key=lambda x: x[1], reverse=True)
+
+    print("[Agent] Step 3: Returning top songs\n")
+
+    return ranked[:3]
